@@ -17,6 +17,31 @@ import pandas as pd
 import yfinance as yf
 from statsmodels.tsa.ar_model import AutoReg
 
+# Yahoo Finance blocks cloud server IPs unless we send browser-like headers.
+# Setting these on the yfinance session fixes the "Unable to fetch" error
+# when the app is deployed on Streamlit Community Cloud.
+_YF_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/125.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+}
+
+
+def _ticker(symbol: str) -> yf.Ticker:
+    """Return a yfinance Ticker with browser-like headers to avoid IP blocks."""
+    t = yf.Ticker(symbol)
+    t.session = None  # let yfinance create a fresh session
+    # Patch the underlying requests session headers
+    import requests
+    session = requests.Session()
+    session.headers.update(_YF_HEADERS)
+    t.session = session
+    return t
+
 # Path to the CSV that lists every BSE-listed company we support.
 # Resolved relative to this file so it works no matter what directory
 # `streamlit run` is launched from.
@@ -53,7 +78,7 @@ def _safe_get(data: dict, key: str):
 
 def fetch_stock_info(stock_ticker: str) -> dict:
     """Fetch and categorize the fundamental info for a given ticker."""
-    raw = yf.Ticker(stock_ticker).info
+    raw = _ticker(stock_ticker).info
 
     return {
         "Basic Information": {
@@ -126,7 +151,7 @@ def fetch_stock_info(stock_ticker: str) -> dict:
 
 def fetch_stock_history(stock_ticker: str, period: str, interval: str) -> pd.DataFrame:
     """Fetch OHLC candlestick data for a given ticker/period/interval."""
-    stock_data = yf.Ticker(stock_ticker)
+    stock_data = _ticker(stock_ticker)
     return stock_data.history(period=period, interval=interval)[
         ["Open", "High", "Low", "Close"]
     ]
@@ -141,7 +166,7 @@ def generate_stock_prediction(stock_ticker: str):
     has too little history to fit a 250-lag model).
     """
     try:
-        stock_data = yf.Ticker(stock_ticker)
+        stock_data = _ticker(stock_ticker)
         hist = stock_data.history(period="2y", interval="1d")
 
         if hist.empty or len(hist) < 260:

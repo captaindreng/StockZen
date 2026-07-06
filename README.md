@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📈 StockZen
 
 ML-powered stock price prediction app built with Python and Streamlit.
@@ -79,3 +80,8 @@ fallback for the news page).
 
 This is **not financial advice**. Forecasts are for educational purposes
 only — there is no guarantee of trading performance.
+=======
+# StockZen
+• Developed an ML-based stock price prediction platform using Python, Streamlit, YFinance, ARIMA, and Plotly to analyze historical market data and forecast future stock trends.
+• Implemented real-time data integration, interactive financial dashboards, and backtesting techniques, improving prediction analysis and investment decision support.
+>>>>>>> c74d6badaf241674c0d7ccfd26491766d496db9f

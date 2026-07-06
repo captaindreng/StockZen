@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 streamlit==1.33.0
 yfinance==0.2.65
 pandas==2.2.2
@@ -5,3 +6,15 @@ numpy==1.26.4
 plotly==5.21.0
 statsmodels==0.14.2
 requests==2.32.3
+=======
+ipykernel==6.29.5
+matplotlib==3.10.0
+numpy==2.0.0
+pandas==2.3.0
+plotly==6.0.0
+scipy==1.15.0
+seaborn==0.13.2
+statsmodels==0.14.4
+streamlit==1.45.0
+yfinance==0.2.65
+>>>>>>> c74d6badaf241674c0d7ccfd26491766d496db9f
