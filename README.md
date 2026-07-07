@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 📈 StockZen
 
 ML-powered stock price prediction app built with Python and Streamlit.
