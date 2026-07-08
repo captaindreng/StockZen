@@ -3,7 +3,7 @@
 
 ML-powered stock price prediction app built with Python and Streamlit.
 Fetches live market data, shows fundamentals, and forecasts future prices
-using a time-series model — built as a learning project, not financial advice.
+using a time series model built as a learning project, not financial advice.
 
 ## Features
 
